@@ -1,9 +1,9 @@
-name: "STAGING ENV: Snowflake Terraform Demo Workflow"
+name: "UAT ENV: Snowflake Terraform Workflow"
 
 on: 
   push:
     branches: 
-      - staging
+      - QA
 
 jobs:
   deploy-terraform-staging:
