@@ -7,13 +7,12 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "<your-bucket-name>"
+    bucket         = "my-terraform-state-bucket-dataplatr-staging"
     key            = "terraform-staging.tfstate"
-    region         = "<bucket-region>"
+    region         = "us-east-1"
     # Optional DynamoDB for state locking. See https://developer.hashicorp.com/terraform/language/settings/backends/s3 for details.
     # dynamodb_table = "terraform-state-lock-table"
     encrypt        = true
-    role_arn       = "arn:aws:iam::711387092589:role/terraform-s3-backend-role-stage"
   }
 }
 
