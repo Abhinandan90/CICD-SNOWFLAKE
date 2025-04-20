@@ -1,44 +1,44 @@
-resource "snowflake_database_grant" "database_ro_grant" {
-  database_name = snowflake_database.tf_demo_database.name
-
-  privilege = "USAGE"
-  roles     = ["TF_DEMO_READER"]
+# Create Role
+resource "snowflake_role" "tf_demo_reader" {
+  name = "TF_DEMO_READER"
 }
 
-resource "snowflake_schema_grant" "schema_ro_grant" {
-  database_name = snowflake_database.tf_demo_database.name
-  schema_name   = snowflake_schema.tf_demo_schema.name
-
-  privilege = "USAGE"
-  roles     = ["TF_DEMO_READER"]
+# Grant USAGE on the Database
+resource "snowflake_grant_privileges_to_database_role" "grant_usage_on_db" {
+  privileges         = ["USAGE"]
+  database_role_name = snowflake_role.tf_demo_reader.name
+  on_database        = snowflake_database.tf_demo_database.name
 }
 
-resource "snowflake_table_grant" "table_ro_grant" {
-  database_name = snowflake_database.tf_demo_database.name
-  schema_name   = snowflake_schema.tf_demo_schema.name
-
-  privilege = "SELECT"
-  roles     = ["TF_DEMO_READER"]
-
-  on_future         = true
-  with_grant_option = false
-  on_all            = false
+# Grant USAGE on the Schema
+resource "snowflake_grant_privileges_to_database_role" "grant_usage_on_schema" {
+  privileges         = ["USAGE"]
+  database_role_name = snowflake_role.tf_demo_reader.name
+  on_schema {
+    schema_name = "${snowflake_database.tf_demo_database.name}.${snowflake_schema.tf_demo_schema.name}"
+  }
 }
 
-resource "snowflake_view_grant" "view_ro_grant" {
-  database_name = snowflake_database.tf_demo_database.name
-  schema_name   = snowflake_schema.tf_demo_schema.name
-
-  privilege = "SELECT"
-  roles     = ["TF_DEMO_READER"]
-
-  on_future         = true
-  with_grant_option = false
-  on_all            = false
+# Grant SELECT on all future Tables
+resource "snowflake_grant_privileges_to_database_role" "grant_select_on_future_tables" {
+  privileges         = ["SELECT"]
+  database_role_name = snowflake_role.tf_demo_reader.name
+  on_schema_object {
+    future {
+      object_type_plural = "TABLES"
+      in_schema          = "${snowflake_database.tf_demo_database.name}.${snowflake_schema.tf_demo_schema.name}"
+    }
+  }
 }
 
-resource "snowflake_warehouse_grant" "warehouse_grant" {
-  warehouse_name = snowflake_warehouse.task_warehouse.name
-  privilege      = "USAGE"
-  roles          = ["TF_DEMO_READER"]
+# Grant SELECT on all future Views
+resource "snowflake_grant_privileges_to_database_role" "grant_select_on_future_views" {
+  privileges         = ["SELECT"]
+  database_role_name = snowflake_role.tf_demo_reader.name
+  on_schema_object {
+    future {
+      object_type_plural = "VIEWS"
+      in_schema          = "${snowflake_database.tf_demo_database.name}.${snowflake_schema.tf_demo_schema.name}"
+    }
+  }
 }
