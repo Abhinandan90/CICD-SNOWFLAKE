@@ -17,10 +17,11 @@ terraform {
 }
 
 provider "snowflake" {
-  user         = "ABHI"
-  account_name = "DRHKQLS-FV23937"
-  role         = "ACCOUNTADMIN"
-  private_key  = var.snowflake_private_key
+  user              = "ABHI"
+  account_name      = "FV23937"
+  role              = "ACCOUNTADMIN"
+  organization_name = "DRHKQLS"
+  private_key       = var.snowflake_private_key
 }
 
 module "snowflake_resources" {
