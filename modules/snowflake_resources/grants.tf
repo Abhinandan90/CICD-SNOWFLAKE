@@ -1,44 +1,14 @@
-resource "snowflake_database_grant" "database_ro_grant" {
-  database_name = snowflake_database.tf_demo_database.name
-
-  privilege = "USAGE"
-  roles     = ["TF_DEMO_READER"]
+resource "snowflake_account_role" "tf_demo_reader" {
+  name = "TF_DEMO_READER"
 }
 
-resource "snowflake_schema_grant" "schema_ro_grant" {
-  database_name = snowflake_database.tf_demo_database.name
-  schema_name   = snowflake_schema.tf_demo_schema.name
-
-  privilege = "USAGE"
-  roles     = ["TF_DEMO_READER"]
+resource "snowflake_database_role" "tf_demo_reader" {
+  database = snowflake_database.tf_demo_database.name
+  name     = "TF_DEMO_READER"
 }
 
-resource "snowflake_table_grant" "table_ro_grant" {
-  database_name = snowflake_database.tf_demo_database.name
-  schema_name   = snowflake_schema.tf_demo_schema.name
-
-  privilege = "SELECT"
-  roles     = ["TF_DEMO_READER"]
-
-  on_future         = true
-  with_grant_option = false
-  on_all            = false
-}
-
-resource "snowflake_view_grant" "view_ro_grant" {
-  database_name = snowflake_database.tf_demo_database.name
-  schema_name   = snowflake_schema.tf_demo_schema.name
-
-  privilege = "SELECT"
-  roles     = ["TF_DEMO_READER"]
-
-  on_future         = true
-  with_grant_option = false
-  on_all            = false
-}
-
-resource "snowflake_warehouse_grant" "warehouse_grant" {
-  warehouse_name = snowflake_warehouse.task_warehouse.name
-  privilege      = "USAGE"
-  roles          = ["TF_DEMO_READER"]
+resource "snowflake_grant_privileges_to_database_role" "grant_usage_on_db" {
+  database_role_name = snowflake_database_role.tf_demo_reader.fully_qualified_name
+  on_database        = snowflake_database_role.tf_demo_reader.database
+  privileges         = ["USAGE"]
 }
