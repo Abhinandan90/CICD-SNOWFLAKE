@@ -3,7 +3,7 @@ name: "STAGING ENV: Snowflake Terraform Demo Workflow"
 on: 
   push:
     branches: 
-      - staging
+      - QA
 
 jobs:
   deploy-terraform-staging:
