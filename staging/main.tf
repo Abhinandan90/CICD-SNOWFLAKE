@@ -7,21 +7,21 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "<your-bucket-name>"
-    key            = "terraform-staging.tfstate"
-    region         = "<bucket-region>"
+    bucket = "my-terraform-state-bucket-dataplatr-staging"
+    key    = "terraform-staging.tfstate"
+    region = "us-east-1"
     # Optional DynamoDB for state locking. See https://developer.hashicorp.com/terraform/language/settings/backends/s3 for details.
     # dynamodb_table = "terraform-state-lock-table"
-    encrypt        = true
-    role_arn       = "arn:aws:iam::711387092589:role/terraform-s3-backend-role-stage"
+    encrypt = true
   }
 }
 
 provider "snowflake" {
-  user    = "ABHI"
-  account_name     = "DRHKQLS-FV23937"
-  role        = "ACCOUNTADMIN"
-  private_key = var.snowflake_private_key
+  user              = "ABHI"
+  account_name      = "FV23937"
+  role              = "ACCOUNTADMIN"
+  organization_name = "DRHKQLS"
+  password          = "Jaihanuman02#3"
 }
 
 module "snowflake_resources" {
