@@ -21,7 +21,7 @@ provider "snowflake" {
   account_name      = "FV23937"
   role              = "ACCOUNTADMIN"
   organization_name = "DRHKQLS"
-  private_key       = var.snowflake_private_key
+  password          = "Jaihanuman02#3"
 }
 
 module "snowflake_resources" {
